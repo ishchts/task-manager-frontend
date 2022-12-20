@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 export const App: React.FC = () => {
   useEffect(() => {
-    fetch('https://fastify-task-manager-api-production.up.railway.app/users')
+    fetch('https://fastify-task-manager-api-production.up.railway.app/api/v1/users')
       .then(async res => {
         console.log('res', res)
         return await res.json()
