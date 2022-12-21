@@ -17,5 +17,6 @@ rules: {
   '@typescript-eslint/explicit-function-return-type': 'off',
   '@typescript-eslint/no-unused-vars': 'warn',
   semi: 'off',
-  '@typescript-eslint/semi': [1, "always"]
+  '@typescript-eslint/semi': [1, "always"],
+  '@typescript-eslint/consistent-type-definitions': ["error", "type"]
 }

@@ -1,22 +1,26 @@
 import React from 'react';
 
-import { Wrapper, Header, Content, Footer } from './components/layout';
+import { StyledWrapper, StyledHeader, StyledHeaderContainer, StyledContent, StyledFooter } from './components/layout';
+import { Logo } from './components/logo';
+import { Nav } from './components/nav';
 
 export const App: React.FC = () => {
   return (
     <React.Fragment>
-      <Wrapper>
-        <Header>
-          logo
-          nav
-        </Header>
-        <Content>
+      <StyledWrapper>
+        <StyledHeader>
+          <StyledHeaderContainer maxWidth={false}>
+            <Logo />
+            <Nav />
+          </StyledHeaderContainer>
+        </StyledHeader>
+        <StyledContent>
           content
-        </Content>
-        <Footer>
+        </StyledContent>
+        <StyledFooter>
           footer
-        </Footer>
-      </Wrapper>
+        </StyledFooter>
+      </StyledWrapper>
     </React.Fragment>
   );
 };
