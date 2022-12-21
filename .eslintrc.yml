@@ -15,5 +15,7 @@ plugins:
   - react
 rules: {
   '@typescript-eslint/explicit-function-return-type': 'off',
-  '@typescript-eslint/no-unused-vars': 'warn'
+  '@typescript-eslint/no-unused-vars': 'warn',
+  semi: 'off',
+  '@typescript-eslint/semi': [1, "always"]
 }
