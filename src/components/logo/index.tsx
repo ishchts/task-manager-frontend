@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 export const StyledLogo = styled.div`
@@ -8,13 +9,16 @@ export const StyledLogo = styled.div`
   justify-content: center;
   font-size: 24px;
   font-weight: 600;
-  color: #fff;
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
 `;
 
 export const Logo: React.FC = () => {
   return (
     <StyledLogo>
-      Task Manager
+      <NavLink to="/">Менеджер задач</NavLink>
     </StyledLogo>
   );
 };
