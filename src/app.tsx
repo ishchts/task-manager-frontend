@@ -6,27 +6,31 @@ import {
   RouterProvider
 } from 'react-router-dom';
 
-import { Layout } from './components/layout';
+import { Link } from '@mui/material';
 
-import { UserDetail } from './pages/user-detail';
+import UsersList from './pages/users/list';
+import UserEdit from './pages/users/edit';
+import UserNew from './pages/users/new';
+
+import { Layout } from './components/layout';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<Layout />} errorElement={<div>500</div>} >
-      <Route errorElement={<div>404</div>} >
-        <Route index element={<div>index element</div>} />
-        <Route path='users' element={<div>users</div>} />
-        <Route path='users/:id' element={<UserDetail />} />
-        <Route path='users/:id/edit' element={<div>user edit</div>} />
-        <Route path='users/:id/new' element={<div>user new</div>} />
-        <Route path='statuses' element={<div>statuses</div>} />
+    <Route path='/' errorElement={<Layout>500</Layout>} >
+      <Route errorElement={<Layout>404</Layout>} >
+        <Route index element={<Layout>index element <Link>activiti</Link></Layout>} />
+        <Route path='users' element={<UsersList />}>
+          <Route path=':id/edit' element={<UserEdit />} />
+        </Route>
+        <Route path='users/new' element={<UserNew />} />
+        <Route path='statuses' element={<Layout>statuses</Layout>} />
         <Route path='labels' element={<div>labels</div>} />
         <Route path='tasks' element={<div>tasks</div>} />
         <Route path='sign-in' element={<div>sign in</div>} />
         <Route path='sign-up' element={<div>sign up</div>} />
         <Route path='sign-out' element={<div>sign out</div>} />
       </Route>
-   </Route>
+    </Route>
   )
 );
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Outlet } from 'react-router';
 import styled from '@emotion/styled';
 import { Container } from '@mui/system';
 
@@ -34,7 +33,11 @@ export const StyledFooter = styled.footer`
   height: 60px;
 `;
 
-export const Layout: React.FC = () => {
+type LayoutProps = {
+  children: React.ReactNode
+};
+
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <StyledWrapper>
       <StyledHeader>
@@ -44,7 +47,7 @@ export const Layout: React.FC = () => {
         </StyledHeaderContainer>
       </StyledHeader>
       <StyledMain>
-        <Outlet />
+        {children}
       </StyledMain>
       <StyledFooter>
         footer

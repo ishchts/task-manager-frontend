@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { Link } from '@mui/material';
 
 export const StyledLogo = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const StyledLogo = styled.div`
 export const Logo: React.FC = () => {
   return (
     <StyledLogo>
-      <NavLink to="/">Менеджер задач</NavLink>
+      <Link href="/">Менеджер задач</Link>
     </StyledLogo>
   );
 };
