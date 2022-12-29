@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Link } from '@mui/material';
 
+import withRouter, { withRouterProps } from '../HOC/withRouter';
 export const StyledLogo = styled.div`
   display: flex;
   width: 200px;
@@ -15,10 +16,13 @@ export const StyledLogo = styled.div`
   }
 `;
 
-export const Logo: React.FC = () => {
+type LogoCompProps = withRouterProps;
+const LogoComp: React.FC<LogoCompProps> = () => {
   return (
     <StyledLogo>
       <Link href="/">Менеджер задач</Link>
     </StyledLogo>
   );
 };
+
+export const Logo = withRouter(LogoComp);
