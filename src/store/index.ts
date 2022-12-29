@@ -1,7 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
+import auth from './auth/auth-slice';
 export const store = configureStore({
-  reducer: {}
+  reducer: {
+    auth
+  }
 });
 
 export type AppDispatch = typeof store.dispatch;
@@ -12,3 +16,6 @@ RootState,
 unknown,
 Action<string>
 >;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

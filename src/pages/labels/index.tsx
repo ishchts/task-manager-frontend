@@ -1,12 +1,12 @@
 import React from 'react';
 import { Layout } from '../../components/layout';
 
-const StatusNew = () => {
+const Labels: React.FC = () => {
   return (
     <Layout>
-      status new
+      Labels
     </Layout>
   );
 };
 
-export default StatusNew;
+export default Labels;

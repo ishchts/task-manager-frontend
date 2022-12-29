@@ -6,30 +6,97 @@ import {
   RouterProvider
 } from 'react-router-dom';
 
-import { Link } from '@mui/material';
+import Home from './pages/home';
 
 import UsersList from './pages/users/list';
 import UserEdit from './pages/users/edit';
 import UserNew from './pages/users/new';
 
+import StatusList from './pages/statuses/list';
+import StatusEdit from './pages/statuses/edit';
+import StatusNew from './pages/statuses/new';
+
+import Labels from './pages/labels';
+
+import Tasks from './pages/tasks';
+
+import NotFound from './pages/not-found';
+
+import SignIn from './pages/sign-in';
+import SignUp from './pages/sign-up';
+
 import { Layout } from './components/layout';
+import { RequireAuth } from './components/require-auth';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' errorElement={<Layout>500</Layout>} >
       <Route errorElement={<Layout>404</Layout>} >
-        <Route index element={<Layout>index element <Link>activiti</Link></Layout>} />
+        <Route index element={<Home />} />
+
         <Route path='users' element={<UsersList />}>
-          <Route path=':id/edit' element={<UserEdit />} />
+          <Route
+            path=':id/edit'
+            element={
+              <RequireAuth>
+                <UserEdit />
+              </RequireAuth>
+            }
+          />
         </Route>
         <Route path='users/new' element={<UserNew />} />
-        <Route path='statuses' element={<Layout>statuses</Layout>} />
-        <Route path='labels' element={<div>labels</div>} />
-        <Route path='tasks' element={<div>tasks</div>} />
-        <Route path='sign-in' element={<div>sign in</div>} />
-        <Route path='sign-up' element={<div>sign up</div>} />
-        <Route path='sign-out' element={<div>sign out</div>} />
+
+        <Route
+          path='statuses'
+          element={
+            <RequireAuth>
+              <StatusList />
+            </RequireAuth>
+          }
+        >
+          <Route path=':id/edit' element={<StatusEdit />} />
+        </Route>
+        <Route
+          path='statuses/new'
+          element={
+            <RequireAuth>
+              <StatusNew />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path='labels'
+          element={
+            <RequireAuth>
+              <Labels />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path='tasks'
+          element={
+            <RequireAuth>
+              <Tasks />
+            </RequireAuth>
+          }
+        />
+
+        <Route path='sign-in' element={<SignIn />} />
+
+        <Route path='sign-up' element={<SignUp />} />
+
+        <Route
+          path='sign-out'
+          element={
+            <RequireAuth>
+              <div>sign out</div>
+            </RequireAuth>
+          }
+        />
       </Route>
+      <Route path='/404' element={<NotFound />} />
     </Route>
   )
 );
