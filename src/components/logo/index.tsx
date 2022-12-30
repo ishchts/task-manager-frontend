@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Link } from '@mui/material';
 
-import withRouter, { withRouterProps } from '../HOC/withRouter';
+import withRouter, { withRouterProps } from '../HOC/with-router';
 export const StyledLogo = styled.div`
   display: flex;
   width: 200px;

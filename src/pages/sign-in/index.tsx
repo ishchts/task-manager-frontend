@@ -1,19 +1,25 @@
-import React from 'react';
-import { Navigate } from 'react-router';
-import { useAppSelector } from '../../store';
-import { isAuth } from '../../store/auth/auth-slice';
+import React, { useCallback } from 'react';
+import { Container } from '@mui/material';
+import styled from '@emotion/styled';
 import { Layout } from '../../components/layout';
+import { Login, LoginProps } from '../../components/forms/login';
 
+const Page = styled.div`
+  padding-top: 50px;
+  height: 100%;
+`;
 const SignIn: React.FC = () => {
-  const isAuthUser = useAppSelector(isAuth);
-
-  if (isAuthUser) {
-    return <Navigate to='/' />;
-  }
+  const handleSubmit: LoginProps['onSubmit'] = useCallback((values) => {
+    console.log('values', values);
+  }, []);
 
   return (
     <Layout>
-      SignIn
+      <Page>
+        <Container maxWidth='sm'>
+          <Login onSubmit={handleSubmit} />
+        </Container>
+      </Page>
     </Layout>
   );
 };

@@ -10,7 +10,6 @@ import Home from './pages/home';
 
 import UsersList from './pages/users/list';
 import UserEdit from './pages/users/edit';
-import UserNew from './pages/users/new';
 
 import StatusList from './pages/statuses/list';
 import StatusEdit from './pages/statuses/edit';
@@ -27,6 +26,7 @@ import SignUp from './pages/sign-up';
 
 import { Layout } from './components/layout';
 import { RequireAuth } from './components/require-auth';
+import { RequireLogout } from './components/require-logout';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,7 +44,6 @@ const router = createBrowserRouter(
             }
           />
         </Route>
-        <Route path='users/new' element={<UserNew />} />
 
         <Route
           path='statuses'
@@ -83,9 +82,23 @@ const router = createBrowserRouter(
           }
         />
 
-        <Route path='sign-in' element={<SignIn />} />
+        <Route
+          path='sign-in'
+          element={
+            <RequireLogout>
+              <SignIn />
+            </RequireLogout>
+          }
+        />
 
-        <Route path='sign-up' element={<SignUp />} />
+        <Route
+          path='sign-up'
+          element={
+            <RequireLogout>
+              <SignUp />
+            </RequireLogout>
+          }
+        />
 
         <Route
           path='sign-out'
