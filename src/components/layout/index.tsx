@@ -16,11 +16,14 @@ export const StyledHeader = styled.header`
   background-color: #1976d2;
 `;
 
-export const StyledHeaderContainer = styled(Container)`
+const StyledContainer = styled(Container)`
+  height: 100%;
+`;
+
+export const StyledHeaderContainer = styled(StyledContainer)`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  height: 100%;
 `;
 
 export const StyledMain = styled.main`
@@ -47,10 +50,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </StyledHeaderContainer>
       </StyledHeader>
       <StyledMain>
-        {children}
+        <StyledContainer maxWidth={false}>
+          {children}
+        </StyledContainer>
       </StyledMain>
       <StyledFooter>
-        footer
+        <StyledContainer maxWidth={false}>
+          footer
+        </StyledContainer>
       </StyledFooter>
   </StyledWrapper>
   );

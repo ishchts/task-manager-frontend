@@ -11,7 +11,9 @@ import '@fontsource/roboto/700.css';
 import { store } from './store';
 import { App } from './app';
 
-import { createTheme, ThemeProvider, LinkProps } from '@mui/material';
+import { createTheme, ThemeProvider, LinkProps, Theme } from '@mui/material';
+import { ruRU as coreRuRu } from '@mui/material/locale';
+import { ruRU } from '@mui/x-data-grid';
 import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 
@@ -32,7 +34,7 @@ Omit<RouterLinkProps, 'to'> & { href: RouterLinkProps['to'] }
 
 LinkBehavior.displayName = 'LinkBehavior';
 
-const theme = createTheme({
+const theme: Theme = createTheme({
   components: {
     MuiLink: {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -44,7 +46,9 @@ const theme = createTheme({
       defaultProps: {
         LinkComponent: LinkBehavior
       }
-    }
+    },
+    ...coreRuRu.components,
+    ...ruRU.components
   }
 });
 

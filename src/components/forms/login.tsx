@@ -23,8 +23,6 @@ const validationSchema = yup.object().shape({
 });
 
 const initialValues = {
-  firstName: '',
-  lastName: '',
   email: '',
   password: ''
 };

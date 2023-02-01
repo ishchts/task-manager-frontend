@@ -7,11 +7,12 @@ type RequireAuthProps = {
   children: JSX.Element
   hideTemplate?: boolean
 };
+
 export const RequireAuth: React.FC<RequireAuthProps> = ({ children, hideTemplate }) => {
   const isAuthUser = useAppSelector(isAuth);
 
   if (!isAuthUser) {
-    return (<Navigate to='/404' state={{ hideTemplate }} />);
+    return (<Navigate to='/404' replace state={{ hideTemplate }} />);
   }
 
   return children;
