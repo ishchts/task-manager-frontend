@@ -37,10 +37,13 @@ const router = createBrowserRouter(
         <Route path='users' element={<UsersList />}>
           <Route
             path=':id/edit'
+            // element={
+            //   <RequireAuth>
+            //     <UserEdit />
+            //   </RequireAuth>
+            // }
             element={
-              <RequireAuth>
-                <UserEdit />
-              </RequireAuth>
+              <UserEdit />
             }
           />
         </Route>

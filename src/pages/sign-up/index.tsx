@@ -3,7 +3,7 @@ import { Container } from '@mui/material';
 import styled from '@emotion/styled';
 
 import { Layout } from '../../components/layout';
-import { NewUser, NewUserProps } from '../../components/forms/new-user';
+import { NewUserForm, NewUserFormProps } from '../../components/user/new-user-form/new-user-form';
 
 const Page = styled.div`
   padding-top: 50px;
@@ -11,7 +11,7 @@ const Page = styled.div`
 `;
 
 const SignUp: React.FC = () => {
-  const handleSubmit: NewUserProps['onSubmit'] = useCallback((values) => {
+  const handleSubmit: NewUserFormProps['onSubmit'] = useCallback((values) => {
     console.log('values', values);
   }, []);
 
@@ -19,7 +19,7 @@ const SignUp: React.FC = () => {
     <Layout>
       <Page>
         <Container maxWidth='sm'>
-          <NewUser onSubmit={handleSubmit}/>
+          <NewUserForm onSubmit={handleSubmit}/>
         </Container>
       </Page>
     </Layout>

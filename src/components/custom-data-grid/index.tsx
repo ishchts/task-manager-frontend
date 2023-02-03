@@ -1,7 +1,9 @@
 import React from 'react';
 import { DataGrid, DataGridProps, GridColDef } from '@mui/x-data-grid';
-import { Backdrop, CircularProgress, Box, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import styled from '@emotion/styled';
+
+import { LoadingOverlay } from '../loading-overlay';
 
 const StyledGridOverlay = styled('div')(() => {
   const theme = useTheme();
@@ -78,14 +80,6 @@ const CustomNoRowsOverlay: React.FC = () => {
       {/* @ts-expect-error */}
       <Box sx={{ mt: 1 }}>{theme?.components?.MuiDataGrid?.defaultProps?.localeText?.noRowsLabel}</Box>
     </StyledGridOverlay>
-  );
-};
-
-const LoadingOverlay: React.FC = () => {
-  return (
-    <Backdrop open={true} sx={{ color: '#fff', zIndex: 100, position: 'absolute' }}>
-      <CircularProgress color='inherit' />
-    </Backdrop>
   );
 };
 

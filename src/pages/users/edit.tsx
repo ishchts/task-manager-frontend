@@ -1,22 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-import { Dialog, Button } from '@mui/material';
+import { EditUserDialog } from '../../components/user/edit-user-dialog/edit-user-dialog';
 
-const Edit: React.FC = () => {
+const UserEdit: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Dialog open={true}>
-      user edit
-      <div>
-        <Button variant='contained' onClick={() => {
-          navigate('/users', { replace: true });
-        }}>Сохранить</Button>
-        <Button variant='contained' color='error'>Отмена</Button>
-      </div>
-    </Dialog>
+    <EditUserDialog
+      open={true}
+      onSave={() => {
+        navigate('/users', { replace: true });
+      }}
+      onClose={() => {
+        navigate('/users', { replace: true });
+      }}
+    />
   );
 };
 
-export default Edit;
+export default UserEdit;

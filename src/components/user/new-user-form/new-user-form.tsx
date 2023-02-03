@@ -50,11 +50,11 @@ const initialValues = {
   password: ''
 };
 
-export type NewUserProps = {
+export type NewUserFormProps = {
   onSubmit: FormikConfig<typeof initialValues>['onSubmit']
 };
 
-const NewUserComp: React.FC<NewUserProps> = ({
+const NewUserFormComp: React.FC<NewUserFormProps> = ({
   onSubmit
 }) => {
   const formik = useFormik<typeof initialValues>({
@@ -110,10 +110,11 @@ const NewUserComp: React.FC<NewUserProps> = ({
         <Button
           variant='contained'
           type='submit'
+          disabled={formik.isSubmitting}
         >Создать</Button>
       </StyledFormFooter>
     </StyledForm>
   );
 };
 
-export const NewUser = memo(NewUserComp);
+export const NewUserForm = memo(NewUserFormComp);
