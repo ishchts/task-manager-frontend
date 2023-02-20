@@ -90,6 +90,7 @@ export type CustomDataGridProps = DataGridProps & {
 export const CustomDataGrid: React.FC<CustomDataGridProps> = (props) => {
   return (
     <DataGrid
+    {...props}
     columns={props.columns}
     rows={props.rows}
     loading={props.loading}

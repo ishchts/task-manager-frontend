@@ -57,6 +57,18 @@ export const usersApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: (result, err, arg) => {
           return [{ type: 'Users', id: arg.id }];
+        },
+        extraOptions: {
+          qwe: 'asd'
+        }
+      }),
+      removeUser: builder.mutation<unknown, { id: User['id'] }>({
+        query: ({ id }) => ({
+          url: `/v1/users/${id}`,
+          method: 'DELETE'
+        }),
+        invalidatesTags: (result, err, arg) => {
+          return [{ type: 'Users', id: arg.id }];
         }
       })
     });
@@ -95,5 +107,6 @@ export const {
 export const {
   useGetUsersQuery,
   useCreateNewUserMutation,
-  useEditUserMutation
+  useEditUserMutation,
+  useRemoveUserMutation
 } = usersApi;

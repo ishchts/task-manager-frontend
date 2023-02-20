@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridSelectionModel } from '@mui/x-data-grid';
 import { Button, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import styled from '@emotion/styled';
 
 import { useAppSelector } from '../../store';
@@ -13,6 +12,7 @@ import { useAuth } from '../../hooks/use-auth';
 import { Layout } from '../../components/layout';
 import { CustomDataGrid } from '../../components/custom-data-grid';
 import { NewUserDialog } from '../../components/user/new-user-dialog/new-user-dialog';
+import { RemoveUserDialog } from '../../components/user/remove-user-dialog';
 
 import { useGetUsersQuery, selectAllUsers } from '../../services/users';
 
@@ -65,7 +65,7 @@ const columns: GridColDef[] = [
 
 const List: React.FC = () => {
   const navigate = useNavigate();
-  const { error, isLoading, isFetching } = useGetUsersQuery(undefined);
+  const { isLoading, isFetching } = useGetUsersQuery(undefined);
 
   const { isAuthUser } = useAuth();
   const allUsers = useAppSelector(selectAllUsers);
@@ -76,13 +76,11 @@ const List: React.FC = () => {
     setOpenNewUserDialog(!openNewUserDialog);
   }, [openNewUserDialog]);
 
-  if (error) {
-    return (
-      <div>
-        error
-      </div>
-    );
-  }
+  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
+
+  const handleSelectionModelChange = useCallback((model: GridSelectionModel) => {
+    setSelectionModel(model);
+  }, []);
 
   return (
     <>
@@ -102,24 +100,25 @@ const List: React.FC = () => {
             variant='contained'
             color='secondary'
             onClick={() => {
-              navigate('11/edit', { replace: isAuthUser || true });
+              navigate(`${selectionModel[0]}/edit`, { replace: isAuthUser });
             }}
+            disabled={selectionModel.length !== 1}
           >
             Редактировать
           </Button>
-          <Button
-            variant='outlined'
-            color='error'
-            startIcon={<DeleteIcon />}
-          >
-            Удалить
-          </Button>
+          <RemoveUserDialog
+            disabled={selectionModel.length !== 1}
+            userId={Number(selectionModel[0])}
+          />
         </StyledActions>
         <StyledContent>
             <CustomDataGrid
               columns={columns}
               rows={allUsers}
               loading={isLoading || isFetching}
+              checkboxSelection={true}
+              onSelectionModelChange={handleSelectionModelChange}
+              selectionModel={selectionModel}
             />
         </StyledContent>
         <Outlet />

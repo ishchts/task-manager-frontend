@@ -3,10 +3,10 @@ import { RootState } from '../../index';
 
 import { authApi } from '../../../services/auth';
 
-const tocken = localStorage.getItem('tocken');
+const token = localStorage.getItem('token');
 
 const initialState = {
-  isAuth: !!tocken
+  isAuth: !!token
 };
 
 const auth = createSlice({
@@ -18,7 +18,7 @@ const auth = createSlice({
     },
     logout: (state) => {
       state.isAuth = false;
-      localStorage.removeItem('tocken');
+      localStorage.removeItem('token');
     }
   },
   extraReducers: (builder) => {
@@ -26,7 +26,7 @@ const auth = createSlice({
       authApi.endpoints.signUp.matchFulfilled,
       (state, { payload }) => {
         state.isAuth = true;
-        localStorage.setItem('tocken', JSON.stringify(payload));
+        localStorage.setItem('token', JSON.stringify(payload));
       }
     );
   }
