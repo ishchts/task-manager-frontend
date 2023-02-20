@@ -1,9 +1,14 @@
 import React, { memo } from 'react';
-import { useFormik, FormikConfig } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 import styled from '@emotion/styled';
 
 import { Button, TextField } from '@mui/material';
+
+import { User } from '../../../store/features/users/user-slice';
+import { useCreateNewUserMutation } from '../../../services/users';
+
+import { LoadingOverlay } from '../../loading-overlay';
 
 const StyledForm = styled.form``;
 
@@ -51,20 +56,44 @@ const initialValues = {
 };
 
 export type NewUserFormProps = {
-  onSubmit: FormikConfig<typeof initialValues>['onSubmit']
+  onSubmitStart?: () => void
+  onSubmitSuccess?: (res: Omit<User, 'id' | 'createdAt'>) => void
+  onSubmitError?: (e: unknown) => void
+  onCancel?: () => void
 };
 
 const NewUserFormComp: React.FC<NewUserFormProps> = ({
-  onSubmit
+  onSubmitStart,
+  onSubmitSuccess,
+  onSubmitError,
+  onCancel
 }) => {
+  const [createNewUser, newUserMetaData] = useCreateNewUserMutation();
+
   const formik = useFormik<typeof initialValues>({
     initialValues,
     validationSchema,
-    onSubmit
+    onSubmit: async (values) => {
+      try {
+        if (onSubmitStart) {
+          onSubmitStart();
+        }
+        const res = await createNewUser(values).unwrap();
+        if (onSubmitSuccess) {
+          onSubmitSuccess(res);
+        }
+      } catch (e) {
+        if (onSubmitError) {
+          onSubmitError(e);
+        }
+      }
+    }
   });
 
   return (
-    <StyledForm onSubmit={formik.handleSubmit}>
+    <>
+      <LoadingOverlay open={newUserMetaData.isLoading} />
+      <StyledForm onSubmit={formik.handleSubmit}>
       <TextField
         margin='normal'
         variant="outlined"
@@ -112,8 +141,22 @@ const NewUserFormComp: React.FC<NewUserFormProps> = ({
           type='submit'
           disabled={formik.isSubmitting}
         >Создать</Button>
+        {onCancel && (
+          <>
+            {' '}
+            <Button
+              variant='contained'
+              type='button'
+              color='error'
+              onClick={onCancel}
+            >
+              Отмена
+            </Button>
+          </>
+        )}
       </StyledFormFooter>
     </StyledForm>
+    </>
   );
 };
 

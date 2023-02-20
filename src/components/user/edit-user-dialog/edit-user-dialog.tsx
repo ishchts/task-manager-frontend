@@ -1,14 +1,19 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
+import { useParams } from 'react-router';
+import { createSelector, EntityState } from '@reduxjs/toolkit';
 
 import {
   Dialog,
   DialogProps,
-  Button,
   DialogTitle,
   DialogContent
 } from '@mui/material';
 
-import { NewUserForm } from '../new-user-form/new-user-form';
+import { useGetUsersQuery, useEditUserMutation } from '../../../services/users';
+import { User } from '../../../store/features/users/user-slice';
+
+import { EditUserForm, EditUserFormProps } from '../edit-user-form/edit-user-form';
+import { LoadingOverlay } from '../../loading-overlay';
 
 type EditUserDialogProps = DialogProps & {
   onSave?: () => void
@@ -21,31 +26,50 @@ const EditUserDialogComp: React.FC<EditUserDialogProps> = ({
   onSave,
   onCancel
 }) => {
+  const { id: userId } = useParams();
+  const [updateUser, { isLoading: isUpdateUserLoading }] = useEditUserMutation();
+
+  const selectUser = useMemo(() => {
+    return createSelector(
+      (result: EntityState<User> | undefined) => result,
+      (res: EntityState<User> | undefined, userId: number) => userId,
+      (data, userId) => data?.entities[userId]
+    );
+  }, []);
+
+  const { selectedUser } = useGetUsersQuery(undefined, {
+    selectFromResult: (result) => {
+      return {
+        ...result,
+        selectedUser: selectUser(result.data, Number(userId))
+      };
+    }
+  });
+
+  const handleSubmit = useCallback<EditUserFormProps['onSubmit']>(async (values) => {
+    await updateUser(values);
+    if (onSave) {
+      onSave();
+    }
+  }, [onSave, updateUser]);
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <>
+      <LoadingOverlay open={isUpdateUserLoading} invisible={true} />
+      <Dialog open={open} onClose={onClose}>
       <DialogTitle>Редактировать пользователя</DialogTitle>
       <DialogContent>
-        <NewUserForm
-          onSubmit={() => {
-            console.log(222);
-          }}
-        />
-        <Button
-            variant='contained'
-            onClick={onSave}
-          >
-            Сохранить
-          </Button>
-          {' '}
-          <Button
-            variant='contained'
-            color='error'
-            onClick={onCancel}
-          >
-            Отмена
-          </Button>
+        {selectedUser && (
+          <EditUserForm
+            onSubmit={handleSubmit}
+            onCancel={onCancel}
+            initialValues={selectedUser}
+          />
+        )}
       </DialogContent>
     </Dialog>
+    </>
+
   );
 };
 

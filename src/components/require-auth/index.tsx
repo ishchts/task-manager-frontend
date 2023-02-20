@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router';
-import { useAppSelector } from '../../store';
-import { isAuth } from '../../store/auth/auth-slice';
+import { useAuth } from '../../hooks/use-auth';
 
 type RequireAuthProps = {
   children: JSX.Element
@@ -9,7 +8,7 @@ type RequireAuthProps = {
 };
 
 export const RequireAuth: React.FC<RequireAuthProps> = ({ children, hideTemplate }) => {
-  const isAuthUser = useAppSelector(isAuth);
+  const { isAuthUser } = useAuth();
 
   if (!isAuthUser) {
     return (<Navigate to='/404' replace state={{ hideTemplate }} />);

@@ -7,13 +7,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import styled from '@emotion/styled';
 
 import { useAppSelector } from '../../store';
-import { isAuth } from '../../store/auth/auth-slice';
+
+import { useAuth } from '../../hooks/use-auth';
 
 import { Layout } from '../../components/layout';
 import { CustomDataGrid } from '../../components/custom-data-grid';
 import { NewUserDialog } from '../../components/user/new-user-dialog/new-user-dialog';
 
-import { useGetUsersQuery } from '../../services/users';
+import { useGetUsersQuery, selectAllUsers } from '../../services/users';
 
 const StyledPageTitle = styled(Typography)`
   margin-top: 20px;
@@ -64,11 +65,11 @@ const columns: GridColDef[] = [
 
 const List: React.FC = () => {
   const navigate = useNavigate();
+  const { error, isLoading, isFetching } = useGetUsersQuery(undefined);
 
-  const req = useGetUsersQuery();
+  const { isAuthUser } = useAuth();
+  const allUsers = useAppSelector(selectAllUsers);
 
-  const isAuthUser = useAppSelector(isAuth);
-  const { data, error, isLoading } = req;
   const [openNewUserDialog, setOpenNewUserDialog] = useState(false);
 
   const handleOpenNewUserDialog = useCallback(() => {
@@ -101,7 +102,7 @@ const List: React.FC = () => {
             variant='contained'
             color='secondary'
             onClick={() => {
-              navigate('1/edit', { replace: isAuthUser || true });
+              navigate('11/edit', { replace: isAuthUser || true });
             }}
           >
             Редактировать
@@ -117,8 +118,8 @@ const List: React.FC = () => {
         <StyledContent>
             <CustomDataGrid
               columns={columns}
-              rows={data ?? []}
-              loading={isLoading}
+              rows={allUsers}
+              loading={isLoading || isFetching}
             />
         </StyledContent>
         <Outlet />
@@ -127,7 +128,8 @@ const List: React.FC = () => {
         <NewUserDialog
           open={openNewUserDialog}
           onClose={handleOpenNewUserDialog}
-          onSuccessSubmit={handleOpenNewUserDialog}
+          onCancel={handleOpenNewUserDialog}
+          onSubmitSuccess={handleOpenNewUserDialog}
         />
       )}
     </>

@@ -1,9 +1,9 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { List, ListItem } from '@mui/material';
 import styled from '@emotion/styled';
-import { useAppSelector } from '../../store';
-import { isAuth } from '../../store/auth/auth-slice';
+
+import { useAuth } from '../../hooks/use-auth';
 
 const StyledNavList = styled(List)`
   display: flex;
@@ -20,12 +20,19 @@ const StyledNavLink = styled(NavLink)`
   text-decoration: none;
 `;
 
+const StyledLink = styled(Link)`
+  opacity: 0.7;
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+`;
+
 const StyledListItem = styled(ListItem)`
   width: auto;
 `;
 
 export const Nav: React.FC = () => {
-  const isAuthUser = useAppSelector(isAuth);
+  const { isAuthUser, logout } = useAuth();
 
   return (
     <StyledNavList>
@@ -46,7 +53,14 @@ export const Nav: React.FC = () => {
         <StyledListItem><StyledNavLink to="/sign-up">Регистрация</StyledNavLink></StyledListItem>
       )}
       {isAuthUser && (
-        <StyledListItem><StyledNavLink to="/sign-out">Выход</StyledNavLink></StyledListItem>
+        <StyledListItem>
+            <StyledLink
+              to="/"
+              onClick={logout}
+            >
+              Выход
+            </StyledLink>
+          </StyledListItem>
       )}
     </StyledNavList>
   );

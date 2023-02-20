@@ -15,6 +15,9 @@ const UserEdit: React.FC = () => {
       onClose={() => {
         navigate('/users', { replace: true });
       }}
+      onCancel={() => {
+        navigate('/users', { replace: true });
+      }}
     />
   );
 };

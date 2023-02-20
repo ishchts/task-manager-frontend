@@ -1,13 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router';
-import { useAppSelector } from '../../store';
-import { isAuth } from '../../store/auth/auth-slice';
+import { useAuth } from '../../hooks/use-auth';
 
 type RequireLogoutProps = {
   children: JSX.Element
 };
 export const RequireLogout: React.FC<RequireLogoutProps> = ({ children }) => {
-  const isAuthUser = useAppSelector(isAuth);
+  const { isAuthUser } = useAuth();
 
   if (isAuthUser) {
     return (<Navigate to='/' />);

@@ -37,13 +37,10 @@ const router = createBrowserRouter(
         <Route path='users' element={<UsersList />}>
           <Route
             path=':id/edit'
-            // element={
-            //   <RequireAuth>
-            //     <UserEdit />
-            //   </RequireAuth>
-            // }
             element={
-              <UserEdit />
+              <RequireAuth>
+                <UserEdit />
+              </RequireAuth>
             }
           />
         </Route>
@@ -103,14 +100,6 @@ const router = createBrowserRouter(
           }
         />
 
-        <Route
-          path='sign-out'
-          element={
-            <RequireAuth>
-              <div>sign out</div>
-            </RequireAuth>
-          }
-        />
       </Route>
       <Route path='/404' element={<NotFound />} />
     </Route>

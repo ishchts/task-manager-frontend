@@ -2,6 +2,9 @@ import React from 'react';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -66,6 +69,7 @@ root.render(
       <CssBaseline />
       {inputGlobalStyles}
       <App />
+      <ToastContainer />
     </ThemeProvider>
   </Provider>
 );

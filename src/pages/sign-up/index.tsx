@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router';
+
 import { Container } from '@mui/material';
 import styled from '@emotion/styled';
 
 import { Layout } from '../../components/layout';
-import { NewUserForm, NewUserFormProps } from '../../components/user/new-user-form/new-user-form';
+import { NewUserForm } from '../../components/user/new-user-form/new-user-form';
 
 const Page = styled.div`
   padding-top: 50px;
@@ -11,18 +13,22 @@ const Page = styled.div`
 `;
 
 const SignUp: React.FC = () => {
-  const handleSubmit: NewUserFormProps['onSubmit'] = useCallback((values) => {
-    console.log('values', values);
-  }, []);
+  const navigate = useNavigate();
+
+  const handleSubmitSuccess = useCallback(() => {
+    navigate('/sign-in');
+  }, [navigate]);
 
   return (
-    <Layout>
-      <Page>
-        <Container maxWidth='sm'>
-          <NewUserForm onSubmit={handleSubmit}/>
-        </Container>
-      </Page>
-    </Layout>
+    <>
+      <Layout>
+        <Page>
+          <Container maxWidth='sm'>
+            <NewUserForm onSubmitSuccess={handleSubmitSuccess}/>
+          </Container>
+        </Page>
+      </Layout>
+    </>
   );
 };
 

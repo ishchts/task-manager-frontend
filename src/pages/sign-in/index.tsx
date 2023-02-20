@@ -2,22 +2,27 @@ import React, { useCallback } from 'react';
 import { Container } from '@mui/material';
 import styled from '@emotion/styled';
 import { Layout } from '../../components/layout';
-import { Login, LoginProps } from '../../components/forms/login';
+import { Login } from '../../components/forms/login';
+import { SignUpParamResult } from '../../services/auth';
+import { useNavigate } from 'react-router';
 
 const Page = styled.div`
   padding-top: 50px;
   height: 100%;
 `;
+
 const SignIn: React.FC = () => {
-  const handleSubmit: LoginProps['onSubmit'] = useCallback((values) => {
-    console.log('values', values);
-  }, []);
+  const navigate = useNavigate();
+
+  const handleSubmitSuccess = useCallback((data: SignUpParamResult) => {
+    navigate('/');
+  }, [navigate]);
 
   return (
     <Layout>
       <Page>
         <Container maxWidth='sm'>
-          <Login onSubmit={handleSubmit} />
+          <Login onSubmitSuccess={handleSubmitSuccess} />
         </Container>
       </Page>
     </Layout>
