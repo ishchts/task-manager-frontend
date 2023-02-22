@@ -2,8 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 
 import { GridColDef, GridSelectionModel } from '@mui/x-data-grid';
-import { Button, Typography } from '@mui/material';
-import styled from '@emotion/styled';
+import { Button } from '@mui/material';
 
 import { useAppSelector } from '../../store';
 
@@ -13,28 +12,11 @@ import { Layout } from '../../components/layout';
 import { CustomDataGrid } from '../../components/custom-data-grid';
 import { NewUserDialog } from '../../components/user/new-user-dialog/new-user-dialog';
 import { RemoveUserDialog } from '../../components/user/remove-user-dialog';
+import { PageTitle } from '../../components/page-title';
+import { PageActionBar } from '../../components/page-action-bar/page-action-bar';
+import { PageContent } from '../../components/page-content';
 
 import { useGetUsersQuery, selectAllUsers } from '../../services/users';
-
-const StyledPageTitle = styled(Typography)`
-  margin-top: 20px;
-  margin-bottom: 20px;
-`;
-
-const StyledActions = styled('div')`
-  margin-top: 20px;
-  margin-bottom: 30px;
-  a {
-    margin-right: 10px;
-  }
-  button {
-    margin-right: 10px;
-  }
-`;
-
-const StyledContent = styled('div')`
-  height: calc(100% - 168px);
-`;
 
 const columns: GridColDef[] = [
   {
@@ -85,10 +67,10 @@ const List: React.FC = () => {
   return (
     <>
       <Layout>
-        <StyledPageTitle variant="h4" variantMapping={{ h4: 'h1' }}>
+        <PageTitle>
           Пользователи
-        </StyledPageTitle>
-        <StyledActions>
+        </PageTitle>
+        <PageActionBar>
           <Button
             variant='contained'
             color='primary'
@@ -110,8 +92,8 @@ const List: React.FC = () => {
             disabled={selectionModel.length !== 1}
             userId={Number(selectionModel[0])}
           />
-        </StyledActions>
-        <StyledContent>
+        </PageActionBar>
+        <PageContent>
             <CustomDataGrid
               columns={columns}
               rows={allUsers}
@@ -120,7 +102,7 @@ const List: React.FC = () => {
               onSelectionModelChange={handleSelectionModelChange}
               selectionModel={selectionModel}
             />
-        </StyledContent>
+        </PageContent>
         <Outlet />
       </Layout>
       {openNewUserDialog && (
