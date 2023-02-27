@@ -1,4 +1,5 @@
-import { createEntityAdapter, EntityState } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSelector, EntityState } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 import { baseApi } from './a-base-api';
 
@@ -7,7 +8,9 @@ type Status = {
   name: string
 };
 
-const initialState = createEntityAdapter<Status>();
+const statusesAdapter = createEntityAdapter<Status>();
+
+const initialState = statusesAdapter.getInitialState();
 
 const statuses = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,7 +29,7 @@ const statuses = baseApi.injectEndpoints({
         ];
       },
       transformResponse: (responce: Status[]) => {
-        return initialState.setAll(initialState.getInitialState(), responce);
+        return statusesAdapter.setAll(initialState, responce);
       }
     }),
     createStatus: builder.mutation<unknown, Omit<Status, 'id'>>({
@@ -36,8 +39,28 @@ const statuses = baseApi.injectEndpoints({
         body
       }),
       invalidatesTags: ['Statuses']
+    }),
+    editStatusById: builder.mutation<unknown, Status>({
+      query: (body) => ({
+        url: `/v1/statuses/${body.id}`,
+        method: 'PATCH',
+        body
+      }),
+      invalidatesTags: (res, err, arg) => ([{ type: 'Statuses', id: arg.id }])
     })
   })
 });
 
-export const { useGetStatusesQuery, useCreateStatusMutation } = statuses;
+const selectStatusesResult = statuses.endpoints.getStatuses.select(undefined);
+
+const selectStatusesData = createSelector(
+  selectStatusesResult,
+  (statusesResult) => statusesResult.data
+);
+
+export const {
+  selectAll: selectAllStatuses,
+  selectById: selectStatusById
+} = statusesAdapter.getSelectors((state: RootState) => selectStatusesData(state) ?? initialState);
+
+export const { useGetStatusesQuery, useCreateStatusMutation, useEditStatusByIdMutation } = statuses;

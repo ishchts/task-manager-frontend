@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate, Routes, Route } from 'react-router';
 import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import { Layout } from '../../components/layout';
 import { PageTitle } from '../../components/page-title';
@@ -14,6 +13,10 @@ import StatusEdit from './edit';
 
 const List: React.FC = () => {
   const navigate = useNavigate();
+
+  const handleEditButton = useCallback((id: number) => {
+    navigate(`${id}/edit`, { replace: true });
+  }, [navigate]);
 
   return (
     <Layout>
@@ -28,25 +31,9 @@ const List: React.FC = () => {
         >
           Создать статус
         </Button>
-        <Button
-          variant='contained'
-          color='secondary'
-          onClick={() => {
-            navigate('1/edit', { replace: true });
-          }}
-        >
-          Изменить
-        </Button>
-        <Button
-          variant='outlined'
-          color='error'
-          startIcon={<DeleteIcon />}
-        >
-          Удалить
-        </Button>
       </PageActionBar>
       <PageContent>
-        <StatusesTable />
+        <StatusesTable onEditButton={handleEditButton} />
       </PageContent>
       <Routes>
         <Route path=':id/edit' element={<StatusEdit />} />
