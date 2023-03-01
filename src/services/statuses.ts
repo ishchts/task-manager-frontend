@@ -47,6 +47,13 @@ const statuses = baseApi.injectEndpoints({
         body
       }),
       invalidatesTags: (res, err, arg) => ([{ type: 'Statuses', id: arg.id }])
+    }),
+    removeStatus: builder.mutation<unknown, number>({
+      query: (id) => ({
+        url: `/v1/statuses/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: (res, err, id) => ([{ type: 'Statuses', id }])
     })
   })
 });
@@ -63,4 +70,4 @@ export const {
   selectById: selectStatusById
 } = statusesAdapter.getSelectors((state: RootState) => selectStatusesData(state) ?? initialState);
 
-export const { useGetStatusesQuery, useCreateStatusMutation, useEditStatusByIdMutation } = statuses;
+export const { useGetStatusesQuery, useCreateStatusMutation, useEditStatusByIdMutation, useRemoveStatusMutation } = statuses;

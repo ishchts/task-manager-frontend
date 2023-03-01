@@ -1,14 +1,19 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useGetStatusesQuery } from '../../services/statuses';
 
 import { CustomDataGrid } from '../custom-data-grid';
+import { RemoveStatusDialog } from './remove-status-dialog';
+import { LoadingOverlay } from '../loading-overlay';
 
-const getColumns = (onEditButton: StatusesTableProps['onEditButton']): GridColDef[] => {
+const getColumns = (
+  onEditButton: StatusesTableProps['onEditButton'],
+  onConfirmStart: () => void,
+  onConfirmFinish: () => void
+): GridColDef[] => {
   return [
     {
       field: 'id',
@@ -60,13 +65,11 @@ const getColumns = (onEditButton: StatusesTableProps['onEditButton']): GridColDe
       align: 'center',
       renderCell: ({ id }) => {
         return (
-          <Button
-          variant='outlined'
-          color='error'
-          startIcon={<DeleteIcon />}
-        >
-          Удалить
-        </Button>
+          <RemoveStatusDialog
+            statusId={Number(id)}
+            onConfirmStart={onConfirmStart}
+            onConfirmFinish={onConfirmFinish}
+          />
         );
       }
     }
@@ -78,6 +81,7 @@ type StatusesTableProps = {
 };
 
 export const StatusesTable: React.FC<StatusesTableProps> = ({ onEditButton }) => {
+  const [removeStatusIsLoading, setRemoveStatusIsLoading] = useState(false);
   const { items, isLoading, isFetching } = useGetStatusesQuery(undefined, {
     selectFromResult: (result) => {
       const { data } = result;
@@ -92,17 +96,24 @@ export const StatusesTable: React.FC<StatusesTableProps> = ({ onEditButton }) =>
   });
 
   const columns = useMemo(() => {
-    return getColumns(onEditButton);
+    return getColumns(
+      onEditButton,
+      () => setRemoveStatusIsLoading(true),
+      () => setRemoveStatusIsLoading(false)
+    );
   }, [onEditButton]);
 
   return (
-        <CustomDataGrid
-          initialState={{ columns: { columnVisibilityModel: { id: false } } }}
-          columns={columns}
-          rows={items}
-          loading={isLoading || isFetching}
-          hideFooter={true}
-          checkboxSelection={false}
-        />
+    <>
+      <LoadingOverlay open={removeStatusIsLoading} invisible={true} />
+      <CustomDataGrid
+        initialState={{ columns: { columnVisibilityModel: { id: false } } }}
+        columns={columns}
+        rows={items}
+        loading={isLoading || isFetching}
+        hideFooter={true}
+        checkboxSelection={false}
+      />
+    </>
   );
 };
