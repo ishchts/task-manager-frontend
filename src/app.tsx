@@ -12,7 +12,6 @@ import UsersList from './pages/users/list';
 import UserEdit from './pages/users/edit';
 
 import StatusList from './pages/statuses/list';
-import StatusEdit from './pages/statuses/edit';
 import StatusNew from './pages/statuses/new';
 
 import Labels from './pages/labels';
@@ -53,7 +52,7 @@ const router = createBrowserRouter(
             </RequireAuth>
           }
         >
-          <Route path=':id/edit' element={<StatusEdit />} />
+          <Route path=':id/edit' />
         </Route>
         <Route
           path='statuses/new'
@@ -71,7 +70,10 @@ const router = createBrowserRouter(
               <Labels />
             </RequireAuth>
           }
-        />
+        >
+          <Route path='new' />
+          <Route path=':id/edit' />
+        </Route>
 
         <Route
           path='tasks'
