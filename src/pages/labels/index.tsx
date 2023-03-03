@@ -13,6 +13,7 @@ import { NewLabelDialog } from '../../components/labels/new-label-dialog';
 import { EditLabelDialog } from '../../components/labels/edit-label-dialog';
 import { LabelsTable } from '../../components/labels/labels-table';
 import { NewLabelForm } from '../../components/labels/new-label-form';
+import { DeleteLabel } from '../../components/labels/delete-label';
 
 const Labels: React.FC = () => {
   const navigate = useNavigate();
@@ -47,13 +48,12 @@ const Labels: React.FC = () => {
         >
           Редактировать
         </Button>
-        <Button
-          variant='contained'
-          color='error'
-          disabled={selectionModel.length !== 1}
-        >
-          Удалить
-        </Button>
+        <DeleteLabel
+          labelId={Number(selectionModel[0])}
+          buttonProps={{
+            disabled: selectionModel.length !== 1
+          }}
+        />
       </PageActionBar>
       <PageContent>
         <LabelsTable

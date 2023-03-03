@@ -44,6 +44,13 @@ const labelApi = baseApi.injectEndpoints({
         body: { name }
       }),
       invalidatesTags: (res, err, args) => ([{ type: 'Labels', id: args.id }])
+    }),
+    deleteLabel: builder.mutation<unknown, Label['id']>({
+      query: (id) => ({
+        url: `/v1/labels/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: (res, err, id) => ([{ type: 'Labels', id }])
     })
   })
 });
@@ -52,5 +59,6 @@ export const {
   useGetLabelsQuery,
   useCreateLabelMutation,
   useGetLabelByIdQuery,
-  useEditLabelMutation
+  useEditLabelMutation,
+  useDeleteLabelMutation
 } = labelApi;
