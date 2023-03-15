@@ -7,7 +7,7 @@ type Label = {
   updatedAt: string
 };
 
-type Labels = Label[];
+export type Labels = Label[];
 
 const labelApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

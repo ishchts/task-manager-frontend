@@ -26,6 +26,9 @@ import SignUp from './pages/sign-up';
 import { Layout } from './components/layout';
 import { RequireAuth } from './components/require-auth';
 import { RequireLogout } from './components/require-logout';
+import NewTask from './pages/tasks/new-task';
+import EditTask from './pages/tasks/edit-task';
+import DetailTask from './pages/tasks/detail-taks';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -80,6 +83,33 @@ const router = createBrowserRouter(
           element={
             <RequireAuth>
               <Tasks />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path='tasks/new'
+          element={
+            <RequireAuth>
+              <NewTask />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path='tasks/:id/detail'
+          element={
+            <RequireAuth>
+              <DetailTask />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path='tasks/:id/edit'
+          element={
+            <RequireAuth>
+              <EditTask />
             </RequireAuth>
           }
         />
