@@ -27,7 +27,6 @@ import { Layout } from './components/layout';
 import { RequireAuth } from './components/require-auth';
 import { RequireLogout } from './components/require-logout';
 import NewTask from './pages/tasks/new-task';
-import EditTask from './pages/tasks/edit-task';
 import DetailTask from './pages/tasks/detail-taks';
 
 const router = createBrowserRouter(
@@ -101,15 +100,6 @@ const router = createBrowserRouter(
           element={
             <RequireAuth>
               <DetailTask />
-            </RequireAuth>
-          }
-        />
-
-        <Route
-          path='tasks/:id/edit'
-          element={
-            <RequireAuth>
-              <EditTask />
             </RequireAuth>
           }
         />

@@ -70,14 +70,10 @@ const columns: GridColDef[] = [
       return (
         <div style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           width: '100%',
           padding: '0 10px'
         }}>
-          <Button variant='contained' href={`/tasks/${params.id}/edit`}>Изменить</Button>
-
-          {' '}
-
           <Button
             variant='contained'
             color='error'

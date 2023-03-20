@@ -1,6 +1,6 @@
 import { baseApi } from './a-base-api';
 
-type Label = {
+export type Label = {
   id: number
   name: string
   createAt: string
