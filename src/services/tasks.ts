@@ -85,7 +85,7 @@ const taskApi = baseApi.injectEndpoints({
     }),
     editTaskById: builder.mutation<unknown, EditTaskBody>({
       query: ({ id, ...rest }) => ({
-        url: `/v/tasks/${id}`,
+        url: `/v1/tasks/${id}`,
         method: 'PATCH',
         body: rest
       }),

@@ -1,6 +1,5 @@
-import React, { useState, useCallback, ChangeEvent } from 'react';
+import React, { useCallback, ChangeEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import queryString from 'query-string';
 import { Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material';
 
 import { useGetUsersQuery } from '../../services/users';
@@ -8,28 +7,13 @@ import { useGetStatusesQuery } from '../../services/statuses';
 import { useGetLabelsQuery } from '../../services/labels';
 import { TaskQueryParams } from '../../services/tasks';
 
+import { useFilters } from '../../hooks/use-filters';
+
 import { Layout } from '../../components/layout';
 import { PageActionBar } from '../../components/page-action-bar/page-action-bar';
 import { PageTitle } from '../../components/page-title';
 import { PageContent } from '../../components/page-content';
 import { TaskTable } from '../../components/tasks/task-table';
-
-const buildQueryString = <T,>(search: string, filters: T): string => {
-  const searchParams = new URLSearchParams(search);
-  Object.entries(filters as any).forEach(([name, value]) => {
-    if (value) {
-      searchParams.set(name, String(value));
-    } else {
-      searchParams.delete(name);
-    }
-  });
-
-  const paramsString = searchParams.toString()
-    ? `?${searchParams.toString()}`
-    : '';
-
-  return paramsString;
-};
 
 const Tasks: React.FC = () => {
   const { search } = useLocation();
@@ -39,28 +23,23 @@ const Tasks: React.FC = () => {
   const { data: statuses } = useGetStatusesQuery(undefined);
   const { data: labels } = useGetLabelsQuery(undefined);
 
-  const [filters, setFilters] = useState<TaskQueryParams>(() => {
-    const filters = {
-      status: undefined,
-      label: undefined,
-      executor: undefined,
-      isCreator: false
-    };
-
-    return {
-      ...filters,
-      ...queryString.parse(search)
-    };
+  const { filters, updateFilters } = useFilters<TaskQueryParams>(search, {
+    status: undefined,
+    label: undefined,
+    executor: undefined,
+    isCreator: false
   });
 
-  const handleChangeSelectFilter = useCallback((e: ChangeEvent<HTMLInputElement>, checked?: boolean) => {
-    const newFilters = { ...filters, [e.target.name]: typeof checked === 'boolean' ? checked : e.target.value };
-    setFilters(newFilters);
-    const paramsString = buildQueryString<TaskQueryParams>(search, newFilters);
-    navigate(`/tasks${paramsString}`, {
-      replace: true
-    });
-  }, [filters, navigate, search]);
+  const handleChangeSelectFilter = useCallback<
+  (e: ChangeEvent<HTMLInputElement>, checked?: boolean) => void
+  >(async (e, checked) => {
+      const newFilters = { ...filters, [e.target.name]: typeof checked === 'boolean' ? checked : e.target.value };
+      const paramsString = await updateFilters(newFilters);
+
+      navigate(`/tasks${paramsString}`, {
+        replace: true
+      });
+    }, [filters, navigate, updateFilters]);
 
   const handleCreateButton = useCallback(() => {
     navigate('new');
