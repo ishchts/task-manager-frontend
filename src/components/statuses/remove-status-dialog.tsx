@@ -21,6 +21,10 @@ const RemoveStatusDialogComp: React.FC<RemoveStatusDialogProps> = ({ statusId, o
     setOpen(false);
   }, []);
 
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  }, []);
+
   const handleConfirm = useCallback(() => {
     if (onConfirmStart) {
       onConfirmStart();
@@ -40,9 +44,7 @@ const RemoveStatusDialogComp: React.FC<RemoveStatusDialogProps> = ({ statusId, o
           variant='outlined'
           color='error'
           startIcon={<DeleteIcon />}
-          onClick={() => {
-            setOpen(true);
-          }}
+          onClick={handleOpen}
         >
           Удалить
         </Button>

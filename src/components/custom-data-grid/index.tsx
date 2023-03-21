@@ -95,6 +95,7 @@ export const CustomDataGrid: React.FC<CustomDataGridProps> = (props) => {
       rows={props.rows}
       loading={props.loading}
       components={{
+        ...props.components,
         LoadingOverlay,
         NoRowsOverlay: CustomNoRowsOverlay
       }}

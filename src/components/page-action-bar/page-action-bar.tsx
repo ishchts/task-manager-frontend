@@ -2,14 +2,14 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 const StyledActions = styled('div')`
-margin-top: 20px;
-margin-bottom: 30px;
-a {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+`;
+
+const StyledActionItem = styled('div')`
   margin-right: 10px;
-}
-button {
-  margin-right: 10px;
-}
 `;
 
 type PageActionBarProps = {
@@ -19,7 +19,11 @@ type PageActionBarProps = {
 export const PageActionBar: React.FC<PageActionBarProps> = ({ children }) => {
   return (
       <StyledActions>
-        {children}
+        {React.Children.map(children, (child) => (
+          <StyledActionItem>
+            {child}
+          </StyledActionItem>
+        ))}
       </StyledActions>
   );
 };

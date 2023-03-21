@@ -21,6 +21,13 @@ type Task = {
 
 type Tasks = Task[];
 
+export type TaskQueryParams = {
+  status?: number
+  executor?: number
+  label?: number
+  isCreator: boolean
+};
+
 export type TaskDetail = {
   id: number
   name: string
@@ -47,9 +54,10 @@ export type EditTaskBody = CreateTask & {
 
 const taskApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getTasks: builder.query<Tasks, undefined>({
-      query: () => ({
-        url: '/v1/tasks'
+    getTasks: builder.query<Tasks, TaskQueryParams>({
+      query: (params) => ({
+        url: '/v1/tasks',
+        params
       }),
       providesTags: (result) => {
         const newResult = result
@@ -103,6 +111,13 @@ const taskApi = baseApi.injectEndpoints({
          */
       }
       // invalidatesTags: (res, err, args) => ([{ type: 'Tasks', id: args.id }])
+    }),
+    removeTaskById: builder.mutation<unknown, Task['id']>({
+      query: (id) => ({
+        url: `/v1/tasks/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: (res, err, id) => ([{ type: 'Tasks' as const, id }])
     })
   })
 });
@@ -111,5 +126,6 @@ export const {
   useGetTasksQuery,
   useGetTaskByIdQuery,
   useCreateTaskMutation,
-  useEditTaskByIdMutation
+  useEditTaskByIdMutation,
+  useRemoveTaskByIdMutation
 } = taskApi;

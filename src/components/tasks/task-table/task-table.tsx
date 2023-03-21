@@ -1,13 +1,16 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
 
-import { useGetTasksQuery } from '../../services/tasks';
+import { useGetTasksQuery, TaskQueryParams } from '../../../services/tasks';
 
-import { CustomDataGrid } from '../custom-data-grid';
+import { CustomDataGrid } from '../../custom-data-grid';
+import { RemoveTaskDialog } from '../remove-task-dialog';
 
-const columns: GridColDef[] = [
+const buildColumns = (
+  onRemoveTaskSubmitStart: () => void,
+  onRemoveTaskSubmitSuccess: () => void
+): GridColDef[] => ([
   {
     field: 'id',
     headerName: 'id',
@@ -74,26 +77,49 @@ const columns: GridColDef[] = [
           width: '100%',
           padding: '0 10px'
         }}>
-          <Button
-            variant='contained'
-            color='error'
-          >
-            Удалить
-          </Button>
+          <RemoveTaskDialog
+            taskId={params.row.id}
+            taskName={params.row.name}
+            onSubmitStart={onRemoveTaskSubmitStart}
+            onSubmitSuccess={onRemoveTaskSubmitSuccess}
+            onSubmitError={onRemoveTaskSubmitSuccess}
+          />
         </div>
       );
     }
   }
-];
+]);
 
-const TaskTableComp: React.FC = () => {
-  const { data = [], isLoading } = useGetTasksQuery(undefined);
+type TaskTableProps = {
+  filters?: TaskQueryParams
+};
+
+const TaskTableComp: React.FC<TaskTableProps> = ({
+  filters = {
+    status: undefined,
+    label: undefined,
+    executor: undefined,
+    isCreator: false
+  }
+}) => {
+  const { data = [], isLoading, isFetching } = useGetTasksQuery(filters);
+  const [removeTaskIsLoading, setRemoveTaskIsLoading] = useState(false);
+
+  const handleSubmitStart = useCallback(() => {
+    setRemoveTaskIsLoading(true);
+  }, []);
+
+  const handleSubmitSuccess = useCallback(() => {
+    setRemoveTaskIsLoading(false);
+  }, []);
+
+  const columns = useMemo(() => buildColumns(handleSubmitStart, handleSubmitSuccess), [handleSubmitStart, handleSubmitSuccess]);
 
   return (
     <CustomDataGrid
       columns={columns}
       rows={data}
-      loading={isLoading}
+      loading={isLoading || isFetching || removeTaskIsLoading}
     />
   );
 };

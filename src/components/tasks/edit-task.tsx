@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import styled from '@emotion/styled';
 
 import {
-  Button,
   Chip,
   Grid,
   MenuItem,
@@ -164,7 +163,8 @@ const EditTaskComp: React.FC<EditTaskProps> = ({
                 </EditTaskName>
               </PageTitle>
               <PageActionBar>
-                <Button variant='contained' color='inherit'>Редактировать</Button>
+                {/* <Button variant='contained' color='inherit'>Редактировать</Button>
+                <Button variant='contained' color='error'>Удалить</Button> */}
               </PageActionBar>
           </EditTaskHeader>
           <EditTaskDescription>
