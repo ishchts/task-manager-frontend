@@ -1,0 +1,44 @@
+name: On push
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.10
+      - name: Install dependencies
+        run: npm ci
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-task-manager-frontend
+          path: build
+          retention-days: 5
+  download-artifact:
+    needs: ['build']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-task-manager-frontend
+  

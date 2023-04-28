@@ -10,7 +10,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:api": "npx swagger-typescript-api -p https://fastify-task-manager-api-production.up.railway.app/swagger/json -o ./src/api-client --modular",
-    "test": "react-scripts test",
+    "test": "npx jest",
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "lint": "npx eslint ./src"
