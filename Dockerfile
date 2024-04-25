@@ -7,6 +7,4 @@ COPY . .
 RUN npm run build
 
 FROM nginx:stable-alpine3.17-slim as nginx
-RUN addgroup -g 1000 -S www-data \
- && adduser -u 1000 -D -S -G www-data www-data
 COPY --from=base /usr/src/app/build /usr/share/nginx/html
