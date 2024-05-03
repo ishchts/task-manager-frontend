@@ -6,5 +6,5 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM nginx:stable-alpine3.17-slim as nginx
+FROM nginx:1.18.0-alpine as nginx
 COPY --from=base /usr/src/app/build /usr/share/nginx/html
